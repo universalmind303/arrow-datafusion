@@ -1614,6 +1614,15 @@ impl SessionState {
         self
     }
 
+    /// Add extensions
+    pub fn with_config_extension<T>(mut self, ext: Arc<T>) -> Self
+    where
+        T: Send + Sync + 'static,
+    {
+        self.config = self.config.with_extension(ext);
+        self
+    }
+
     /// Get the table factories
     pub fn table_factories(&self) -> &HashMap<String, Arc<dyn TableProviderFactory>> {
         &self.table_factories
@@ -1888,6 +1897,11 @@ impl SessionState {
     /// Return the [`SessionConfig`]
     pub fn config(&self) -> &SessionConfig {
         &self.config
+    }
+
+    /// Return the [`SessionConfig`]
+    pub fn config_mut(&mut self) -> &mut SessionConfig {
+        &mut self.config
     }
 
     /// Return the physical optimizers
